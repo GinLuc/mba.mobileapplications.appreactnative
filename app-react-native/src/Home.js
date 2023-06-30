@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, Text, View, Dimensions, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Button, Alert, RefreshControl } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { StatusBar } from 'expo-status-bar';
 import { FlatList, BorderlessButton, GestureHandlerRootView, Swipeable  } from 'react-native-gesture-handler';
@@ -17,18 +17,31 @@ const Drawer = createDrawerNavigator();
 function HomeScreen({navigation}) {
 
   const [users, setUsers] = React.useState([]);
+  const [refreshing, setRefreshing] = React.useState(true);
 
-  function fetchUsers() {
+
+
+  const fetchUsers = () => {
     userService.getList()
-      .then(list => setUsers(list))
-      .catch(error => navigation.goBack());
+      .then((list) => {
+        setUsers(list);
+        setRefreshing(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        navigation.goBack();
+      });
   }
   
   React.useEffect(() => fetchUsers(), []);
-  
+
   function removeUser(userId) {
+    
     userService.remove(userId)
-        .then(fetchUsers())
+        .then(() => {
+          console.log(`Usuário deletado ${userId}`); 
+          fetchUsers()
+        })
         .catch(error => Alert.alert(error));
   }
   
@@ -50,8 +63,9 @@ function HomeScreen({navigation}) {
       <StatusBar style="auto" />
       <FlatList
           data={users}
-          refreshing={false}
-          onRefresh={fetchUsers}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={fetchUsers} />
+          }
           renderItem={({ item }) => (
             <GestureHandlerRootView>
               <Swipeable renderRightActions={() => <DeleteButton userId={item.id} />}>

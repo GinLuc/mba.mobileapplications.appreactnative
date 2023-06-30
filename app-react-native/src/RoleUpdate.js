@@ -44,6 +44,7 @@ export default function RoleUpdateScreen ({navigation, route}) {
         console.log(`dados salvos: ${name}, ${description} no id ${id}`)
         roleService.updateRole( id, name, description )
             .then(saved => {
+                console.log(`Role ${id} (${name}) atualizado: ${description}`)
                 navigation.goBack();
             })
             .catch(error => Alert.alert(error));

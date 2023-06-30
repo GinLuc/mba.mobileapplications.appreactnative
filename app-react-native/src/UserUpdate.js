@@ -47,7 +47,8 @@ export default function UpdateScreen ({navigation, route}) {
 
             userService.update( id, name, username, password )
                 .then(saved => {
-                    navigation.navigate('Roles');
+                    console.log(`Usuário ${id} (${username}) atualizado: ${name}`)
+                    navigation.goBack();
                 })
                 .catch(error => Alert.alert(error));
         }

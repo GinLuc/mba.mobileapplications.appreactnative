@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Dimensions, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Button, Alert, RefreshControl } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FlatList, BorderlessButton, GestureHandlerRootView, Swipeable  } from 'react-native-gesture-handler';
 
@@ -10,10 +10,14 @@ const Stack = createNativeStackNavigator();
 export default function RolesPage({navigation}) {
 
   const [roles, setRoles] = React.useState([]);
+  const [refreshing, setRefreshing] = React.useState(true);
 
   function fetchRoles() {
     roleService.getRolesList()
-      .then(list => setRoles(list))
+      .then((list) => {
+        setRoles(list);
+        setRefreshing(false);
+      })
       .catch(error => navigation.goBack());
   }
 
@@ -21,7 +25,10 @@ export default function RolesPage({navigation}) {
 
   function removeRole(roleId) {
     roleService.remove(roleId)
-        .then(fetchRoles())
+        .then(() => {
+          console.log(`Usuário deletado ${roleId}`); 
+          fetchRoles();
+        })
         .catch(error => Alert.alert(error));
   }
   
@@ -42,8 +49,9 @@ export default function RolesPage({navigation}) {
       <Text style={styles.title}>Lista de Roles disponíveis</Text>
       <FlatList
           data={roles}
-          refreshing={false}
-          onRefresh={fetchRoles}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={fetchRoles} />
+          }
           renderItem={({ item }) => (
             <GestureHandlerRootView>
               <Swipeable renderRightActions={() => <DeleteButton roleId={item.id} />}>
