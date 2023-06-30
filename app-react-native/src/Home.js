@@ -28,7 +28,7 @@ function HomeScreen({navigation}) {
   
   function removeUser(userId) {
     userService.remove(userId)
-        .then(saved => {fetchUsers()})
+        .then(fetchUsers())
         .catch(error => Alert.alert(error));
   }
   
@@ -44,15 +44,13 @@ function HomeScreen({navigation}) {
     )
   }
 
-  
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Usuários Cadastrados</Text>
       <StatusBar style="auto" />
       <FlatList
           data={users}
-          refreshing={true}
+          refreshing={false}
           onRefresh={fetchUsers}
           renderItem={({ item }) => (
             <GestureHandlerRootView>
@@ -66,20 +64,20 @@ function HomeScreen({navigation}) {
       />
       <View style={styles.horizontalbuttons}>
         <Button title='Adicionar' onPress={() => {navigation.navigate("UserSignUp")}} />
-        <Button title="Sair" onPress={() => navigation.goBack()} />
+        <Button title="Sair" onPress={() => navigation.navigate('Login')} />
       </View>
     </View>
   )
 }
 
-
 export default function HomePage({route}) {
 
   const username = route.params.username
+  
   return (
       <Drawer.Navigator>
-          <Drawer.Screen name='HomeScreen' component={HomeScreen} options={{title: `Usuário ${username}`}}/>
-          <Drawer.Screen name="Roles" component={RolesPage} />
+          <Drawer.Screen name='HomeScreen' component={HomeScreen} options={{title: `Usuários Cadastrados`, headerTitle: `Usuário ${username}`}}/>
+          <Drawer.Screen name="Roles" component={RolesPage} options={{title: `Roles`}} />
       </Drawer.Navigator>
   )
 }

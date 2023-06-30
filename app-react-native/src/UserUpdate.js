@@ -29,7 +29,7 @@ export default function UpdateScreen ({navigation, route}) {
             } 
         }
     
-        React.useEffect(() => fetchUser());
+        React.useEffect(() => fetchUser(), []);
 
         async function save() {
             if (!username || !username.trim()) {
@@ -45,14 +45,9 @@ export default function UpdateScreen ({navigation, route}) {
                 return;
             }
 
-            console.log(id)
-            console.log(name)
-            console.log(username)
-            console.log(password)
             userService.update( id, name, username, password )
                 .then(saved => {
-                    console.log(saved);
-                    navigation.goBack();
+                    navigation.navigate('Roles');
                 })
                 .catch(error => Alert.alert(error));
         }

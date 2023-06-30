@@ -36,13 +36,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userService = void 0;
+exports.roleService = void 0;
 var session_repository_1 = require("./session.repository");
-var UserService = /** @class */ (function () {
-    function UserService() {
-        this.url = 'http://192.168.15.41:3000/users';
+var RoleService = /** @class */ (function () {
+    function RoleService() {
+        this.url = 'http://192.168.15.41:3000/roles';
     }
-    UserService.prototype.getHeaders = function () {
+    RoleService.prototype.getHeaders = function () {
         return __awaiter(this, void 0, void 0, function () {
             var logged;
             return __generator(this, function (_a) {
@@ -60,7 +60,7 @@ var UserService = /** @class */ (function () {
             });
         });
     };
-    UserService.prototype.getList = function () {
+    RoleService.prototype.getRolesList = function () {
         return __awaiter(this, void 0, void 0, function () {
             var response, _a, _b, error;
             var _c;
@@ -91,7 +91,7 @@ var UserService = /** @class */ (function () {
             });
         });
     };
-    UserService.prototype.get = function (id) {
+    RoleService.prototype.getRole = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var response, _a, _b, _c;
             var _d;
@@ -117,7 +117,7 @@ var UserService = /** @class */ (function () {
             });
         });
     };
-    UserService.prototype.create = function (name, username, password) {
+    RoleService.prototype.createRole = function (name, description) {
         return __awaiter(this, void 0, void 0, function () {
             var response, _a, _b;
             var _c;
@@ -131,7 +131,7 @@ var UserService = /** @class */ (function () {
                         };
                         return [4 /*yield*/, this.getHeaders()];
                     case 1: return [4 /*yield*/, _a.apply(void 0, _b.concat([(_c.headers = _d.sent(),
-                                _c.body = JSON.stringify({ name: name, username: username, password: password }),
+                                _c.body = JSON.stringify({ name: name, description: description }),
                                 _c)]))];
                     case 2:
                         response = _d.sent();
@@ -144,7 +144,7 @@ var UserService = /** @class */ (function () {
             });
         });
     };
-    UserService.prototype.update = function (id, name, username, password) {
+    RoleService.prototype.updateRole = function (id, name, description) {
         return __awaiter(this, void 0, void 0, function () {
             var response, _a, _b;
             var _c;
@@ -158,7 +158,7 @@ var UserService = /** @class */ (function () {
                         };
                         return [4 /*yield*/, this.getHeaders()];
                     case 1: return [4 /*yield*/, _a.apply(void 0, _b.concat([(_c.headers = _d.sent(),
-                                _c.body = JSON.stringify({ name: name, username: username, password: password }),
+                                _c.body = JSON.stringify({ name: name, description: description }),
                                 _c)]))];
                     case 2:
                         response = _d.sent();
@@ -171,7 +171,7 @@ var UserService = /** @class */ (function () {
             });
         });
     };
-    UserService.prototype.remove = function (id) {
+    RoleService.prototype.remove = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var response, _a, _b;
             var _c;
@@ -197,6 +197,6 @@ var UserService = /** @class */ (function () {
             });
         });
     };
-    return UserService;
+    return RoleService;
 }());
-exports.userService = new UserService();
+exports.roleService = new RoleService();

@@ -1,9 +1,9 @@
-import { User } from "../dto/user";
+import { Role } from "../dto/role";
 import { session } from "./session.repository";
 
-class UserService {
+class RoleService {
 
-    private readonly url = 'http://192.168.15.41:3000/users';
+    private readonly url = 'http://192.168.15.41:3000/roles';
 
     private async getHeaders() {
         const logged = await session.getLoggedUser();
@@ -15,7 +15,7 @@ class UserService {
         };
     }
 
-    public async getList() {
+    public async getRolesList() {
         const response = await fetch(this.url, {
             method: 'GET',
             headers: await this.getHeaders()
@@ -33,11 +33,10 @@ class UserService {
         }
     }
 
-    public async get(id: number): Promise<User | null> {
+    public async getRole(id: number): Promise<Role | null> {
         const response = await fetch(`${this.url}/${id}`, {
             method: 'GET', headers: await this.getHeaders()
         });
-        
         
         if (response.status === 200) return response.json();
 
@@ -45,11 +44,11 @@ class UserService {
     }
 
 
-    public async create(name: string, username: string, password: string) {
+    public async createRole(name: string, description: string) {
         const response = await fetch(this.url, {
             method: 'POST',
             headers: await this.getHeaders(),
-            body: JSON.stringify({ name, username, password })
+            body: JSON.stringify({ name, description })
         });
 
         if (response.status === 401) {
@@ -59,11 +58,11 @@ class UserService {
         return await response.json();
     }
 
-    public async update(id: number, name: string, username: string, password: string) {
+    public async updateRole(id: number, name: string, description: string) {
         const response = await fetch(`${this.url}/${id}`, {
             method: 'PUT',
             headers: await this.getHeaders(),
-            body: JSON.stringify({ name, username, password })
+            body: JSON.stringify({ name, description })
         });
 
         if (response.status === 401) {
@@ -88,4 +87,4 @@ class UserService {
 
 }
 
-export const userService = new UserService();
+export const roleService = new RoleService();

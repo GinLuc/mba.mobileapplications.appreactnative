@@ -1,7 +1,9 @@
 # Projeto de Avaliação - Mobile Application
+## Turma 24
 
-## Integrantes do projeto
+## Integrantes da equipe
 * Gian Lucca dos Santos Severino
+* Lucas Yuji Tokuzumi Umeda
 
 
 ## Instalação dos pacotes 
