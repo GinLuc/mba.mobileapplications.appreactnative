@@ -117,7 +117,7 @@ var UserService = /** @class */ (function () {
             });
         });
     };
-    UserService.prototype.create = function (name, username, password) {
+    UserService.prototype.create = function (name, username, roles, password) {
         return __awaiter(this, void 0, void 0, function () {
             var response, _a, _b;
             var _c;
@@ -131,7 +131,7 @@ var UserService = /** @class */ (function () {
                         };
                         return [4 /*yield*/, this.getHeaders()];
                     case 1: return [4 /*yield*/, _a.apply(void 0, _b.concat([(_c.headers = _d.sent(),
-                                _c.body = JSON.stringify({ name: name, username: username, password: password }),
+                                _c.body = JSON.stringify({ name: name, username: username, roles: roles, password: password }),
                                 _c)]))];
                     case 2:
                         response = _d.sent();
@@ -144,7 +144,7 @@ var UserService = /** @class */ (function () {
             });
         });
     };
-    UserService.prototype.update = function (id, name, username, password) {
+    UserService.prototype.update = function (id, name, username, roles, password) {
         return __awaiter(this, void 0, void 0, function () {
             var response, _a, _b;
             var _c;
@@ -158,7 +158,7 @@ var UserService = /** @class */ (function () {
                         };
                         return [4 /*yield*/, this.getHeaders()];
                     case 1: return [4 /*yield*/, _a.apply(void 0, _b.concat([(_c.headers = _d.sent(),
-                                _c.body = JSON.stringify({ name: name, username: username, password: password }),
+                                _c.body = JSON.stringify({ name: name, username: username, roles: roles, password: password }),
                                 _c)]))];
                     case 2:
                         response = _d.sent();

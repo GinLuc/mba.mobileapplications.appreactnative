@@ -1,7 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, Dimensions, TextInput, Alert, Button} from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import DropDownPicker from 'react-native-dropdown-picker';
+
 import { userService } from './services/user.service';
+import { roleService } from './services/roles.service';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +16,38 @@ export default function UpdateScreen ({navigation, route}) {
         const [ username, setUsername ] = React.useState('');
         const [ password, setPassword ] = React.useState('');
         const [ confirmPassword, setConfirmPass ] = React.useState('');
+        
+        const [value, setValue] = React.useState([]);
+
+        function RoleSelector() {
+            const [open, setOpen] = React.useState(false);
+            const [roles, setRoles] = React.useState([]);
+        
+            function fetchRoles() {
+                roleService.getRolesList()
+                  .then((list) => {
+                    let rolesList = []
+                    for (let item of list) {
+                        rolesList.push({label: `${item.name}`,value: `${item.name}`})
+                    }
+                    setRoles(rolesList);
+                  })
+                  .catch(error => setRoles([]));
+            }
+            
+            React.useEffect(() => fetchRoles(), []);
+        
+            return (
+                <DropDownPicker
+                open={open}
+                value={value}
+                items={roles}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setRoles}
+                />
+            );
+        }
 
         function fetchUser() {
             if (route.params) {
@@ -45,7 +80,13 @@ export default function UpdateScreen ({navigation, route}) {
                 return;
             }
 
-            userService.update( id, name, username, password )
+            let rolesvalues = []
+
+            for (let item of value) {
+                rolesvalues.push(item);
+            }
+
+            userService.update( id, name, username, rolesvalues, password )
                 .then(saved => {
                     console.log(`Usuário ${id} (${username}) atualizado: ${name}`)
                     navigation.goBack();
@@ -70,7 +111,7 @@ export default function UpdateScreen ({navigation, route}) {
             <TextInput value={confirmPassword} style={styles.input} onChangeText={setConfirmPass} secureTextEntry />
 
             <Text style={styles.label}>Roles: </Text>
-            
+            <RoleSelector/>
 
             <View style={styles.button}>
                 <Button title="Salvar" onPress={save} />

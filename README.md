@@ -17,3 +17,6 @@ No diretório `app-react-native`, execute o comando:
 $ npx expo start
 ```
 <b>Obs:</b> Necessário executar a aplicação de autenticação NodeJS, disponível [neste repositório](https://github.com/uedsonreis/authentication-nestjs/tree/main).
+
+## Vídeo Demonstrativo
+![Vídeo demonstrativo do funcionamento da aplicação](./docs_assets/Exemplo_Projeto.gif)

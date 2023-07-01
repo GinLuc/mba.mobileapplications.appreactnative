@@ -24,6 +24,7 @@ function HomeScreen({navigation}) {
   const fetchUsers = () => {
     userService.getList()
       .then((list) => {
+        //console.log(`Usuários: ${list[4].roles[1]}`)
         setUsers(list);
         setRefreshing(false);
       })
@@ -39,7 +40,7 @@ function HomeScreen({navigation}) {
     
     userService.remove(userId)
         .then(() => {
-          console.log(`Usuário deletado ${userId}`); 
+          console.log(`Usuário ${userId} deletado.`); 
           fetchUsers()
         })
         .catch(error => Alert.alert(error));
@@ -70,7 +71,7 @@ function HomeScreen({navigation}) {
             <GestureHandlerRootView>
               <Swipeable renderRightActions={() => <DeleteButton userId={item.id} />}>
                 <View style={styles.itemView} onTouchEnd={() => {navigation.navigate('UserUpdate', { userId: item.id })} }>
-                  <Text>{item.id}. {item.name} ({item.username}) </Text>
+                  <Text>{item.id}. {item.name} ({item.username}): {item.roles} </Text>
                 </View>
               </Swipeable>
             </GestureHandlerRootView>

@@ -1,10 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View, Dimensions, TextInput, Alert, Button} from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import { userService } from './services/user.service';
+import { roleService } from './services/roles.service';
 
 const Stack = createNativeStackNavigator();
+
 
 function SignUpScreen ({navigation}) {
 
@@ -12,6 +15,38 @@ function SignUpScreen ({navigation}) {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [confirmPass, setConfirmPass] = React.useState('');
+    const [value, setValue] = React.useState([]);
+
+    function RoleSelector() {
+        const [open, setOpen] = React.useState(false);
+        const [roles, setRoles] = React.useState([]);
+    
+        function fetchRoles() {
+            roleService.getRolesList()
+              .then((list) => {
+                let rolesList = []
+                for (let item of list) {
+                    rolesList.push({label: `${item.name}`,value: `${item.name}`})
+                }
+                setRoles(rolesList);
+              })
+              .catch(error => setRoles([]));
+        }
+        
+        React.useEffect(() => fetchRoles(), []);
+    
+        return (
+            <DropDownPicker
+            open={open}
+            value={value}
+            items={roles}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setRoles}
+            />
+        );
+    }
+    
 
     function save() {
         if (!name || name.trim() === '') {
@@ -30,8 +65,14 @@ function SignUpScreen ({navigation}) {
             Alert.alert('A Senha não confere!');
             return;
         }
+        
+        let rolesvalues = []
 
-        userService.create(name, username, password).then(data => {
+        for (let item of value) {
+            rolesvalues.push(item);
+        }
+
+        userService.create(name, username, rolesvalues, password).then(data => {
             if (data.id) {
                 navigation.goBack();
             } else {
@@ -60,7 +101,7 @@ function SignUpScreen ({navigation}) {
             <TextInput style={styles.input} onChangeText={setConfirmPass} secureTextEntry />
 
             <Text style={styles.label}>Roles: </Text>
-        
+            <RoleSelector/>
 
             <View style={styles.button}>
                 <Button title="Salvar" onPress={save} />

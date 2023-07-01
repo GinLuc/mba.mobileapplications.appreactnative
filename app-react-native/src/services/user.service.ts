@@ -45,11 +45,11 @@ class UserService {
     }
 
 
-    public async create(name: string, username: string, password: string) {
+    public async create(name: string, username: string, roles: Array<string | number>, password: string ) {
         const response = await fetch(this.url, {
             method: 'POST',
             headers: await this.getHeaders(),
-            body: JSON.stringify({ name, username, password })
+            body: JSON.stringify({ name, username, roles, password })
         });
 
         if (response.status === 401) {
@@ -59,11 +59,11 @@ class UserService {
         return await response.json();
     }
 
-    public async update(id: number, name: string, username: string, password: string) {
+    public async update(id: number, name: string, username: string, roles: Array<string | number>, password: string) {
         const response = await fetch(`${this.url}/${id}`, {
             method: 'PUT',
             headers: await this.getHeaders(),
-            body: JSON.stringify({ name, username, password })
+            body: JSON.stringify({ name, username, roles, password })
         });
 
         if (response.status === 401) {
